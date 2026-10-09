@@ -72,6 +72,11 @@ def cadastrar():
             flash('Erro: Email já cadastrado')
             return redirect(url_for('cadastro_usu'))
 
+
+       if nome.strip() == "":
+         flash("O nome não pode ficar vazio.")
+         return redirect(url_for('cadastro')
+
         # GERA CRIPITOGRAFIA DE SENHA
         senha_hash = bcrypt.generate_password_hash(senha).decode('utf-8')
 
@@ -233,6 +238,10 @@ def editar_perfil(id):
             email = request.form['email']
             nova_senha = request.form['senha']
             mao_obra = request.form['mao_obra']
+
+       if nome.strip() == "":
+         flash("O nome não pode ficar vazio.")
+         return redirect(url_for('cadastro'))
 
             # SELECIONA AS SENHAS ANTIGAS DO USUÁRIO (da mais recente pra mais antiga)
             cursor.execute("""SELECT senha
