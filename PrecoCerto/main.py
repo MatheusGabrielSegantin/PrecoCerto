@@ -73,7 +73,7 @@ def cadastrar():
             return redirect(url_for('cadastro_usu'))
 
 
-        if nome.strip() == "":
+        if nome.strip() == "": #NAO PERMITE ESPAÇO NO COMEÇO E NO FINAL 
           flash("O nome não pode ficar   vazio.")
           return redirect(url_for('cadastro')
 
