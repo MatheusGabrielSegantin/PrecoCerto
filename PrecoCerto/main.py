@@ -75,7 +75,7 @@ def cadastrar():
 
         if nome.strip() == " ": #NAO PERMITE ESPAÇO NO COMEÇO E NO FINAL 
           flash("O nome não pode ficar  vazio.")
-          return redirect(url_for('cadastro_usu')
+          return redirect(url_for('cadastro_usu'))
 
         # GERA CRIPITOGRAFIA DE SENHA
         senha_hash = bcrypt.generate_password_hash(senha).decode('utf-8')
