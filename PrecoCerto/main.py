@@ -45,9 +45,7 @@ def cadastrar():
     senha = request.form['senha']
     mao_obra = request.form['mao-de-obra']
 
-    if nome.strip() == " ":  # NAO PERMITE ESPAÇO NO COMEÇO E NO FINAL
-        flash("O nome não pode ficar  vazio.")
-        return redirect(url_for('cadastro_usu'))
+    
 
     if not mao_obra:   #SE A MÃO DE OBRA NÃO TIVER SIDO INFORMADA
         flash("Mão de obra não informada!")
@@ -249,9 +247,7 @@ def editar_perfil(id):
             nova_senha = request.form['senha']
             mao_obra = request.form['mao_obra']
 
-            if nome.strip() == " ":
-                flash("O nome não pode ficar vazio.")
-                return redirect(url_for('editar_perfil'))
+            
 
             # SELECIONA AS SENHAS ANTIGAS DO USUÁRIO (da mais recente pra mais antiga)
             cursor.execute("""SELECT senha
