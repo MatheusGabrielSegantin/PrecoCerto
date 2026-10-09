@@ -73,9 +73,9 @@ def cadastrar():
             return redirect(url_for('cadastro_usu'))
 
 
-        if nome.strip() == "": #NAO PERMITE ESPAÇO NO COMEÇO E NO FINAL 
-          flash("O nome não pode ficar   vazio.")
-          return redirect(url_for('cadastro')
+        if nome.strip() == " ": #NAO PERMITE ESPAÇO NO COMEÇO E NO FINAL 
+          flash("O nome não pode ficar  vazio.")
+          return redirect(url_for('cadastro_usu')
 
         # GERA CRIPITOGRAFIA DE SENHA
         senha_hash = bcrypt.generate_password_hash(senha).decode('utf-8')
@@ -239,9 +239,9 @@ def editar_perfil(id):
             nova_senha = request.form['senha']
             mao_obra = request.form['mao_obra']
 
-        if nome.strip() == "":
+        if nome.strip() == " ":
           flash("O nome não pode ficar vazio.")
-          return redirect(url_for('cadastro'))
+          return redirect(url_for('editar_perfil'))
 
             # SELECIONA AS SENHAS ANTIGAS DO USUÁRIO (da mais recente pra mais antiga)
             cursor.execute("""SELECT senha
