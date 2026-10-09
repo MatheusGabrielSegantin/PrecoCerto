@@ -25,3 +25,10 @@ senha varchar(254),
 )
 
 SELECT * FROM SENHAS_UTILIZADAS 
+
+
+
+
+pip install flask
+pip install flask-bcrypt
+pip install fdb
