@@ -227,18 +227,6 @@ flash-messages {
     margin-bottom: 10px;
 }
 
-.flash.success {
-    background-color: #EDF7E9;
-    color: #376B2C;
-    border: 1px solid #C7E2BE;
-}
-
-.flash.error,
-.flash.danger {
-    background-color: #FFF0EB;
-    color: #A94127;
-    border: 1px solid #F0C5B8;
-}
 
 /* FOOTER */
 
