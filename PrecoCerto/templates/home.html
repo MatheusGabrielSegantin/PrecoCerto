@@ -14,7 +14,7 @@
         <h1>Preço<span>Certo</span></h1>
         <p>PRECIFICAÇÃO AFETIVA</p>
         <nav>
-            <a href="{{url_for('login_usu')}}" >Sair</a>
+            <a href="{{url_for('logout')}}" >Sair</a>
         </nav>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

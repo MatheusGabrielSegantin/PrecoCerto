@@ -398,17 +398,19 @@ def adicionar_insumo():
 
 @app.route('/cadastrar_insumo', methods=['POST'])
 def cadastrar_insumo():
-
+    print('1')
     if 'id_usuario' not in session:
         flash("Você precisa estar logado!")
         return redirect(url_for('login_usu'))
 
     id_usuario = session['id_usuario']
+    print('2')
 
     nome = request.form['nome'].strip()
     unidade = request.form['unidade']
     custo_unitario = request.form['custo_unitario']
     estoque = request.form['estoque']
+    print('3')
 
     if not nome:
         flash("O campo nome não pode estar vazio")
@@ -420,6 +422,7 @@ def cadastrar_insumo():
 
     custo_unitario = float(custo_unitario)
     estoque = float(estoque)
+    print('4')
 
     if custo_unitario < 0:
         flash("Custo unitário não pode ter um valor negativo!")
@@ -428,22 +431,25 @@ def cadastrar_insumo():
     if estoque < 0:
         flash("Estoque não pode ter um valor negativo!")
         return redirect(url_for('adicionar_insumo'))
-
-
+    print('5')
 
     cursor = con.cursor()
 
     try:
+        print('6')
         cursor.execute("""SELECT 1
                           FROM insumos
                           WHERE nome = ? AND id_usuario = ?""",
                        (nome, id_usuario))
+        print('7')
 
         insumos = cursor.fetchone()
+        print(insumos)
 
         if insumos:
             flash("Erro: Insumo já cadastrado")
             return redirect(url_for('adicionar_insumo'))
+        print('8')
 
         cursor.execute("""INSERT INTO insumos
                           (nome, unidade, custo_unitario, estoque, id_usuario)
@@ -451,6 +457,7 @@ def cadastrar_insumo():
                        (nome, unidade, custo_unitario, estoque, id_usuario))
 
         con.commit()
+        print('9')
 
         flash("Insumo cadastrado com sucesso")
         return redirect(url_for('pagina_insumos'))
@@ -494,10 +501,6 @@ def cadastrar_produto():
     if preco < 0:
         flash("Preço não pode ter um valor negativo!")
         return redirect(url_for('adicionar_produto'))
-
-
-
-
 
     if not nome:
         flash("O campo nome não pode estar vazio")
@@ -544,15 +547,9 @@ def cadastrar_produto():
         cursor.close()
 
 
-@app.route('/pesquisa_insumos')
-def pesquisa_insumos():
-    return render_template("pesquisa_insumo.html")
-
 @app.route('/pagina_insumos')
 def pagina_insumos():
     return redirect(url_for("lista_insumos"))
-
-
 
 @app.route('/lista_insumos')
 def lista_insumos():
@@ -592,7 +589,7 @@ def editar_insumo(id):
             return redirect(url_for("pagina_insumos"))
 
         if request.method == 'POST':
-            nome = request.form['nome']
+            nome = request.form['nome'].strip()
             unidade = request.form['unidade']
             custo_unitario = request.form['custo_unitario']
             estoque = request.form['estoque']
@@ -645,6 +642,98 @@ def deletar_insumo(id):
 
     finally:
         cursor.close()
+
+
+@app.route('/pesquisa_insumos', methods=['GET'])
+def pesquisa_insumos():
+    print('1')
+    if 'id_usuario' not in session:
+        flash("Você precisa estar logado!")
+        return redirect(url_for('login_usu'))
+
+    id_usuario = session['id_usuario']
+    print('2')
+    cursor = con.cursor()
+    nome = request.form.get('nome', '').strip()
+
+    print('3')
+    try:
+
+        print('4')
+        # SELECONA OS DADOS QUE PERTENCE AO USUÁRIO LOGADO
+        if nome is None:
+            cursor.execute("""SELECT id_insumos, nome, unidade
+                            FROM insumos
+                            WHERE id_usuario = ? """, (id_usuario,))
+        else:
+            print('5')
+            cursor.execute("""SELECT id_insumos, nome, unidade
+                FROM insumos
+                where nome like ? 
+                and id_usuario = ? """, (f'%{nome}%',id_usuario))
+
+        # CONFERFE SE JÁ TEM ESTES DADOS DE USUÁRIO CADASTRADO E PEGA SOMENTE ELE
+            insumos = cursor.fetchone()
+            print(insumos)
+            # SE ESTE USUÁRIO NÃO EXISTIR
+            if not insumos:
+                flash('Insumo não encontrado')
+                return redirect(url_for('adicionar_insumo'))
+            print('6')
+        # RETORNA NA PÁGINA DE PERFIL, AS INFORMAÇÕES CADASTRADAS DO USUÁRIO LOGADO
+        return render_template('pesquisa_insumo.html', insumos=insumos)
+
+    except Exception as e:  # SE ACONTECER ALGUM ERRO
+        flash(f'Ocorreu um erro -> {e}')
+        return redirect(url_for('home'))
+
+    finally:
+        cursor.close()  # FECHA A CONVERSA COM O BANCO
+
+#
+# @app.route('/pesquisando_insumos/<string:nome>', methods=['GET'])
+# def pesquisando_insumos(nome):
+#
+#     if 'id_usuario' not in session:
+#         flash("Você precisa estar logado!")
+#         return redirect(url_for('login_usu'))
+#
+#     id_usuario = session['id_usuario']
+#
+#     cursor = con.cursor()
+#
+#     try:
+#         # SELECONA OS DADOS QUE PERTENCE AO USUÁRIO LOGADO
+#         if nome is None:
+#             cursor.execute("""SELECT id_insumos, nome, unidade
+#                             FROM insumos
+#                             WHERE id_insumo = ? """, (id_usuario,))
+#         else:
+#             cursor.execute("""SELECT id_insumos, nome, unidade
+#                 FROM insumos
+#                 where nome = ?
+#                 and id_insumo = ? """, ( id_usuario,))
+#
+#         # CONFERFE SE JÁ TEM ESTES DADOS DE USUÁRIO CADASTRADO E PEGA SOMENTE ELE
+#             insumos = cursor.fetchone()
+#
+#             # SE ESTE USUÁRIO NÃO EXISTIR
+#             if not insumos:
+#                 flash('Insumo não encontrado')
+#                 return redirect(url_for('adicionar_insumo'))
+#
+#
+#
+#
+#         # RETORNA NA PÁGINA DE PERFIL, AS INFORMAÇÕES CADASTRADAS DO USUÁRIO LOGADO
+#         return render_template('pesquisa_insumo.html', insumos=insumos)
+#
+#     except Exception as e:  # SE ACONTECER ALGUM ERRO
+#         flash(f'Ocorreu um erro -> {e}')
+#         return redirect(url_for('home'))
+#
+#     finally:
+#         cursor.close()  # FECHA A CONVERSA COM O BANCO
 
 
 @app.route('/pagina_produtos')
