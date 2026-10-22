@@ -31,8 +31,10 @@ id_produto integer,
  FOREIGN KEY (id_produto) REFERENCES produtos(id_produtos)
 )
 
-ALTER TABLE INSUMOS_UTILIZADO ADD  CONSTRAINT FK_PRODUTO
- FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
+ALTER TABLE INSUMOS_UTILIZADO DROP   CONSTRAINT FK_INSUMOS_UTILIZADOS
+    FOREIGN KEY (id_insumos_utilizados) REFERENCES insumos_utilizado(id_insumos_utilizado)
+ 
+
 
 
 
@@ -54,9 +56,11 @@ CREATE TABLE produtos (
     CONSTRAINT FK_INSUMOS_UTILIZADOS
     FOREIGN KEY (id_insumos_utilizados) REFERENCES insumos_utilizado(id_insumos_utilizado)
 );
+ALTER TABLE produtos
+DROP CONSTRAINT FK_INSUMOS_UTILIZADOS;
 
-
-
+ cursor.execute("""DELETE FROM produtos WHERE id_produto = ?""", (id,))
+DELETE FROM INSUMOS_UTILIZADO iu WHERE 
 
 SELECT * FROM USUARIO u 
 
@@ -70,6 +74,17 @@ senha varchar(254),
 
 )
 
+SELECT p.NOME, p.MARGEM_LUCRO, p.SUGESTAO, p.PRECO, p.LUCRO_UNIDADE, p.CUSTO_TOTAL
+FROM PRODUTOS p 
+WHERE p.ID_PRODUTO  = ?
+
+ALTER TABLE produtos DROP
+
+ALTER TABLE produtos add MARGEM_LUCRO NUMERIC(15,2);
+ALTER TABLE produtos add SUGESTAO NUMERIC(15,2);
+ALTER TABLE produtos add PRECO NUMERIC(15,2);
+ALTER TABLE produtos ADD LUCRO_UNIDADE NUMERIC(15,2);
+ALTER TABLE produtos ADD CUSTO_TOTAL NUMERIC(15,2);
 
 
 
