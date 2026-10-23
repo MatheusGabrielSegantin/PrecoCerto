@@ -87,9 +87,31 @@ ALTER TABLE produtos ADD LUCRO_UNIDADE NUMERIC(15,2);
 ALTER TABLE produtos ADD CUSTO_TOTAL NUMERIC(15,2);
 
 
+ SELECT i.nome, iu.quantidade,
+                      iu.unidade
+               FROM insumos_utilizado iu
+               INNER JOIN insumos i ON i.id_insumos = iu.id_insumos
+               WHERE iu.id_produto = 81 and i.id_usuario = 26
 
+               SELECT iu.id_insumos
+                            , i.nome
+                            , case iu.unidade
+                            WHEN 1 THEN 'Quilograma'
+                            WHEN 2 THEN 'Grama'
+                            WHEN 3 THEN 'Litros'
+                            WHEN 4 THEN 'Mililitro'
+                            WHEN 5 THEN 'Unidade'
+                            ELSE ''
+                            END AS unidade
+                            , i.custo_unitario, i.estoque
+                             FROM INSUMOS_UTILIZADO iu 
+                             LEFT JOIN INSUMOS i  ON i.ID_INSUMOS  = iu.ID_INSUMOS 
+                             WHERE i.id_usuario = 26 
+                             AND iu.id_produto = 81
+                             ORDER BY iu.id_insumos DESC
 
 SELECT id_insumos
+
 , nome
 , case unidade
 WHEN 1 THEN 'Quilograma'
