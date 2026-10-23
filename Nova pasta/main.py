@@ -961,10 +961,7 @@ def adicionando_insumo_produto():
         produtos = (produto[0], margem, preco,
                     sugestao, lucro_unidade, custo_total)
 
-        return render_template(
-            'adicionar_insumo_produto.html',
-            produtos=produtos
-        )
+        return render_template('adicionar_insumo_produto.html',produtos=produtos)
 
     except Exception as e:
         con.rollback()
