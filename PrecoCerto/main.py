@@ -1038,134 +1038,91 @@ def relatorio_insumos():
 
 
 
-@app.route('/editar_produto/<int:id>', methods=['GET', 'POST'])
+@app.route('/editar_produto/<int:id>', methods=['GET','POST'])
 def editar_produto(id):
-
-    if 'id_usuario' not in session:
-        flash("Você precisa estar logado!")
-        return redirect(url_for('login_usu'))
-
-    id_usuario = session['id_usuario']
     cursor = con.cursor()
-
     try:
-        cursor.execute("""
-            SELECT id_produto, nome, margem_lucro,
-                   custo_total, sugestao, preco, lucro_unidade
-            FROM produtos
-            WHERE id_produto = ? AND id_usuario = ?
-        """, (id, id_usuario))
+        cursor.execute("""SELECT  id_produto, nome, margem_lucro,custo_total,sugestao, preco, lucro_unidade
+                          FROM produtos
+                          WHERE id_produto = ?""",(id,))
 
-        produto = cursor.fetchone()
+        produtos = cursor.fetchone()
 
-        if not produto:
-            flash("Produto não encontrado!")
-            return redirect(url_for('lista_produtos'))
+        if not produtos:
+            flash('Produto não encontrado!')
+            return redirect(url_for("pagina_produtos"))
 
-        if request.method == 'POST':
+        if request.method == 'POST': #ENVIAR NOVAMENTE
+            nome = request.form['nome'].strip().lower()
+            margem_lucro = request.form['lucro']
+            preco = request.form['preco']
 
-            nome = request.form.get('nome', '').strip().lower()
-            margem_digitada = request.form.get('lucro', '').strip()
-            preco_digitado = request.form.get('preco', '').strip()
-
-            if not nome:
-                flash("O nome não pode estar vazio!")
-                return redirect(url_for('editar_produto', id=id))
-
-            try:
-                # Se o campo estiver vazio, mantém o valor anterior
-                if margem_digitada:
-                    margem_lucro = float(margem_digitada.replace(',', '.'))
-                else:
-                    margem_lucro = float(produto[2])
-
-                if preco_digitado:
-                    preco = float(preco_digitado.replace(',', '.'))
-                else:
-                    preco = float(produto[5])
-
-            except (ValueError, TypeError):
-                flash("Digite valores numéricos válidos!")
-                return redirect(url_for('editar_produto', id=id))
-
-            import math
-
-            if not math.isfinite(margem_lucro) or not math.isfinite(preco):
-                flash("Digite valores numéricos válidos!")
-                return redirect(url_for('editar_produto', id=id))
+            margem_lucro = float(margem_lucro)
+            preco = float(preco)
 
             if margem_lucro < 0:
-                flash("A margem de lucro não pode ser negativa!")
-                return redirect(url_for('editar_produto', id=id))
+                flash("Margem de lucro não pode ter um valor negativo!")
+                return redirect(url_for('adicionar_produto'))
 
             if preco <= 0:
-                flash("O preço de venda deve ser maior que zero!")
-                return redirect(url_for('editar_produto', id=id))
+                flash("Preço não pode ter um valor negativo!")
+                return redirect(url_for('adicionar_produto'))
 
-            cursor.execute("""
-                SELECT 1
-                FROM produtos
-                WHERE nome = ?
-                AND id_usuario = ?
-                AND id_produto <> ?
-            """, (nome, id_usuario, id))
+            cursor.execute("""SELECT 1
+                              FROM produtos
+                              WHERE nome = ? AND id_usuario = ? AND id_produto != ?""",
+                           (nome, session['id_usuario'], id))
 
             produto_cadastrado = cursor.fetchone()
 
             if produto_cadastrado:
-                flash("Já existe outro produto com esse nome!")
+                flash("Erro: Produto já cadastrado")
                 return redirect(url_for('editar_produto', id=id))
 
+
             # Custo total armazenado no banco
-            custo_total = float(produto[3] or 0)
+            custo_total = float(produtos[3] or 0)
+            print('custo: ' ,custo_total)
 
             # Recalcula a sugestão de preço
             sugestao = round(
                 custo_total * (1 + margem_lucro / 100), 2
             )
+            print(sugestao)
 
             # Recalcula o lucro por unidade
-            lucro_unidade = round(preco - custo_total, 2)
+            lucro_unidade = round((preco - custo_total) / 100, 2)
+            print('lucro por unidade: ',  lucro_unidade)
 
             # Atualiza todos os valores juntos
             cursor.execute("""
-                UPDATE produtos
-                SET nome = ?,
-                    margem_lucro = ?,
-                    preco = ?,
-                    sugestao = ?,
-                    lucro_unidade = ?
-                WHERE id_produto = ? AND id_usuario = ?
-            """, (
-                nome,
-                margem_lucro,
-                preco,
-                sugestao,
-                lucro_unidade,
-                id,
-                id_usuario
-            ))
-
-            con.commit()
+                           UPDATE produtos
+                           SET nome = ?,
+                               margem_lucro = ?,
+                               preco = ?,
+                               sugestao = ?,
+                               lucro_unidade = ?
+                           WHERE id_produto = ? AND id_usuario = ?
+                           """,(nome,margem_lucro,preco,sugestao,lucro_unidade,id,session['id_usuario']))
 
             if lucro_unidade < 0:
                 flash("Atenção! Este produto está dando prejuízo!")
 
-            flash("Produto editado com sucesso!")
-            return redirect(url_for('lista_produtos'))
 
-        return render_template(
-            'editar_produto.html',
-            produto=produto
-        )
+            con.commit()
+            flash("Produto editado com sucesso")
+            return redirect(url_for('pagina_produtos'))
+
+        return render_template('editar_produto.html', produto=produtos)
 
     except Exception as e:
         con.rollback()
-        flash(f"Ocorreu um erro: {e}")
-        return redirect(url_for('lista_produtos'))
+        flash(f"Ocorreu um erro -> {e}")
+        return redirect(url_for('pagina_produtos'))
 
     finally:
         cursor.close()
+
 
 
 @app.route('/deletar_produto/<int:id>', methods=['POST'])
@@ -1296,7 +1253,7 @@ def adicionando_insumo_produto():
 
         sugestao = round(custo_total + (custo_total * margem / 100), 2)
 
-        lucro_unidade = round(preco - custo_total, 2)
+        lucro_unidade = round((preco - custo_total) / 100, 2)
         #Lucro vai ser negativo se o preço de venda é menor que custo total
         #Lucro vai ser positivo se o preço de venda é maior que custo total
 
