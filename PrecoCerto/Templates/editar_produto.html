@@ -60,19 +60,21 @@
                         <a class="mais" href="{{ url_for('pesquisa_insumos') }}" aria-label="Adicionar insumo">+</a>
                     </div>
                     <div class="campo">
-                        <label>Custo Total</label>
-                        <p class="valor">R$ {{ produto[3] }}</p>
+                        <label for="lucro">Margem de Lucro *</label>
+                        <input type="number" id="lucro" name="lucro" value="{{ produto[2] }}" min="0" step="0.01" required>
+
                     </div>
                 </div>
 
                 <div class="linha">
                     <div class="campo">
-                        <label for="lucro">Margem de Lucro *</label>
-                        <input type="number" id="lucro" name="lucro" value="{{ produto[2] }}" min="0" step="0.01" required>
+                        <label>Custo Total</label>
+                        <p class="valor">R$ {{ produto[3] }}</p>
+
                     </div>
                     <div class="campo">
                         <label>Sugestão de preço de venda</label>
-                        <p class="valor">R$ {{ produto[4] }}</p>
+                        <p class="valor">R$ {{  produto[4] }}</p>
                     </div>
                 </div>
 
@@ -80,7 +82,7 @@
                 <input type="number" id="preco" name="preco" value="{{ produto[5] }}" min="0" step="0.01" required>
 
                 <label>Lucro por unidade</label>
-                <p class="valor">R$ {{ produto[6] }}</p>
+                <p class="valor"> {{ produto[6] }}%</p>
 
                 <div class="botoes">
                     <a class="botao" href="{{ url_for('pagina_produtos') }}">Cancelar</a>
