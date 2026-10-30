@@ -188,7 +188,8 @@ section {
 table {
     width: 100%;
     border-spacing: 0 15px;
-    text-align: left;
+    text-align: center;
+    table-layout: fixed;
 }
 
 th {
@@ -198,20 +199,17 @@ th {
     font-weight: normal;
     border-top: 1px solid #999;
     border-bottom: 1px solid #999;
+    text-align: center;
 }
 
 td {
     padding: 10px 15px;
     font-size: 13px;
+    text-align: center;
+
 }
 
-td input {
-    width: 100px;
-    height: 35px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
+
 .flash-messages {
     width: 412px;
     max-width: 100%;
@@ -226,15 +224,28 @@ td input {
     background: #f8e6dc;
     margin-top:10px;
 }
+.acao,
+.quantidade {
+    margin: 0;
+}
 
-td button {
-    width: 90px;
+td input {
+    width: 100px;
+    height: 35px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+
+
+}
+
+.botao{
+    width: 100px;
     height: 35px;
     background-color: #F7D9CF;
     color: #C55232;
     border-radius: 5px;
-    cursor: pointer;
-    margin-left:100px;
+    margin-left: 200px;
 
 }
 
@@ -477,6 +488,7 @@ footer {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+
     }
 
     td input,
