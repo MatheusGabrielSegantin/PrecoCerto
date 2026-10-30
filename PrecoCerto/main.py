@@ -9,7 +9,7 @@ app.config['SECRET_KEY'] = 'Aqui_e_a_chave_da_turma_a'
 
 # CONEXÃO COM O BANCO
 host = 'localhost'
-database = r'C:\Users\Aluno\Downloads\PrecoCerto\Nova pasta\BANCO.FDB'
+database = r'C:\Users\Aluno\Downloads\PrecoCerto-main\PrecoCerto-main\Nova pasta\BANCO.FDB'
 user = 'SYSDBA'
 password = 'sysdba'
 
@@ -1091,7 +1091,8 @@ def editar_produto(id):
             print(sugestao)
 
             # Recalcula o lucro por unidade
-            lucro_unidade = round((preco - custo_total) / 100, 2)
+            # lucro_unidade = round((preco - custo_total) / 100, 2)
+            lucro_unidade = round(((preco - custo_total)/custo_total) * 100, 2)
             print('lucro por unidade: ',  lucro_unidade)
 
             # Atualiza todos os valores juntos
