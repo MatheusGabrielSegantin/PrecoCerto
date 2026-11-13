@@ -464,6 +464,11 @@ footer {
         gap: 4px;
     }
 
+    .frase-lateral,
+    .desenho-lateral {
+        display: none;
+    }
+
     .botao-menu {
         width: 48%;
         height: 42px;
@@ -480,12 +485,13 @@ footer {
 
     .conteudo {
         width: 100%;
-        padding: 30px 15px 45px;
+        padding: 24px 14px 32px;
     }
 
     .titulo-pagina {
         margin: 0 0 25px;
-        gap: 15px;
+        gap: 12px;
+        align-items: center;
     }
 
     .logo-card {
@@ -494,18 +500,19 @@ footer {
     }
 
     .titulo-pagina h1 {
-        font-size: 23px;
+        font-size: 21px;
     }
 
     .titulo-pagina p {
-        font-size: 10px;
+        font-size: 12px;
+        line-height: 1.4;
     }
 
     section {
         width: 100%;
         height: auto;
         min-height: 0;
-        padding: 30px 22px 40px;
+        padding: 24px 18px;
         border-radius: 18px;
     }
 
@@ -514,27 +521,32 @@ footer {
     }
 
     .subtitulo {
-        font-size: 11px;
+        font-size: 13px;
+        line-height: 1.4;
     }
 
     form label {
-        font-size: 11px;
+        font-size: 14px;
     }
 
     form input,
     form select {
-        height: 45px;
-        font-size: 11px;
+        height: 48px;
+        font-size: 16px;
     }
 
     .botoes {
-        gap: 10px;
-        margin-top: 25px;
+        gap: 8px;
+        margin-top: 24px;
     }
 
     .botao {
-        height: 45px;
-        font-size: 10px;
+        width: auto;
+        flex: 1;
+        min-width: 0;
+        height: 46px;
+        padding: 0 8px;
+        font-size: 13px;
     }
 
     footer {
