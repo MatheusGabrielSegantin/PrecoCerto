@@ -1,0 +1,571 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    background-color: #FFF7EC;
+    font-family: 'Inter', sans-serif;
+    color: #1A1F24;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+span {
+    color: #C55232;
+}
+
+
+/* HEADER */
+
+header {
+    height: 76px;
+    padding: 0 60px 0 18px;
+    background-color: #FFFAF3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.barra-menu {
+    display: none;
+}
+
+.logo-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-header img {
+    width: 52px;
+    height: 52px;
+}
+
+.logo-header h1 {
+    font-size: 22px;
+/* Define a espessura do texto. */
+    font-weight: 800;
+}
+
+.logo-header p {
+    font-size: 8px;
+/* Define a espessura do texto. */
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.voltar {
+    font-size: 13px;
+    color: #1A1F24;
+}
+
+
+/* ÁREA PRINCIPAL */
+
+main {
+    flex: 1;
+    display: flex;
+}
+
+
+/* BARRA LATERAL (igual à home) */
+
+.barra-botoes {
+    width: 220px;
+    min-width: 220px;
+    min-height: 785px;
+    padding-top: 10px;
+    background-color: #FEFAF3;
+}
+
+.barra-botoes a {
+    display: flex;
+    align-items: center;
+    width: 180px;
+    height: 48px;
+    margin-left: 20px;
+    padding: 8px;
+    border-radius: 8px;
+    color: #1A1F24;
+    font-size: 15px;
+}
+
+.barra-botoes a:hover {
+    background-color: #F8E6DC;
+    color: #C55232;
+}
+
+/* PÁGINA ATUAL */
+
+.barra-botoes a.ativo {
+    background-color: #F8E6DC;
+    color: #A94127;
+}
+
+.barra-botoes a img {
+    width: 27px;
+    margin-right: 15px;
+}
+
+
+/* FRASE LATERAL */
+
+.frase-lateral {
+    width: 170px;
+    margin: 70px 0 0 28px;
+    padding: 15px 12px;
+    background-color: #EDDFD0;
+    border-radius: 12px;
+}
+
+.frase-lateral p {
+    color: #D09475;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.folhinha {
+    width: 40px;
+    margin-bottom: 8px;
+}
+
+.toca {
+    width: 155px;
+    margin: 65px 0 0 22px;
+}
+
+
+/* CONTEÚDO */
+
+section {
+    flex: 1;
+    min-width: 0;
+    padding: 55px 20px 60px;
+}
+
+section h2 {
+    font-size: 42px;
+/* Define a espessura do texto. */
+    font-weight: 800;
+    text-align: center;
+}
+
+section form {
+    width: 600px;
+    margin: auto;
+}
+
+.subtitulo {
+    font-size: 12px;
+    margin-top: 6px;
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+
+/* CARD DO PERFIL */
+
+form {
+    padding: 38px 30px;
+    background-color: white;
+    border-radius: 22px;
+}
+
+.topo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin-top: 0;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    position: static;
+}
+
+.campos {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 20px;
+    position: static;
+}
+
+.campos label {
+    display: block;
+    width: calc(50% - 10px);
+    font-size: 11px;
+/* Define a espessura do texto. */
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.campos input {
+    width: calc(50% - 10px);
+    height: 46px;
+    padding: 0 12px;
+    margin-bottom: 24px;
+    border: 1px solid #E8E0D9;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+}
+
+.campos input:focus {
+    border-color: #C55232;
+}
+
+form button {
+    display: block;
+    width: 40%;
+    height: 40px;
+    margin: 10px auto 0;
+    position: static;
+    background-color: #C55232;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+/* Define a espessura do texto. */
+    font-weight: 700;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #A94127;
+}
+
+
+/* MENSAGENS */
+
+.flash-messages {
+    margin-top: 10px;
+    background-color: #f0f4f8;
+    color: #34495e;
+    border: 1px solid #d5dee8;
+    border-radius: 8px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+/* FOOTER */
+
+footer {
+    height: 100px;
+    padding: 0 40px 0 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.logo-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-footer img {
+    width: 34px;
+    height: 34px;
+}
+
+.logo-footer h2 {
+    font-size: 17px;
+/* Define a espessura do texto. */
+    font-weight: 800;
+}
+
+.logo-footer p {
+    font-size: 6px;
+/* Define a espessura do texto. */
+    font-weight: 700;
+}
+
+.frase {
+    color: #1A1F24;
+    margin-left: 40px;
+}
+
+
+/* NOTEBOOK */
+
+@media (max-width: 1200px) {
+
+    section {
+        padding: 35px 20px;
+    }
+
+    section h2 {
+        font-size: 36px;
+    }
+
+    section form {
+        width: 90%;
+    }
+
+    .topo {
+        gap: 25px;
+    }
+
+    .avatar {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    /* menu lateral (igual à home) */
+
+    .barra-botoes {
+        width: 170px;
+        min-width: 170px;
+    }
+
+    .barra-botoes a {
+        width: 150px;
+        margin-left: 8px;
+        font-size: 14px;
+    }
+
+    .barra-botoes a img {
+        width: 23px;
+        margin-right: 10px;
+    }
+
+    .frase-lateral {
+        width: 140px;
+        margin: 40px 0 0 10px;
+    }
+
+    .toca {
+        width: 120px;
+        margin: 40px 0 0 10px;
+    }
+
+    /* conteúdo */
+
+    section {
+        padding: 30px 20px;
+    }
+
+    section form {
+        width: 90%;
+    }
+
+    .topo {
+        gap: 20px;
+    }
+
+    .avatar {
+        width: 130px;
+        height: 130px;
+    }
+
+    .campos {
+        width: 100%;
+    }
+
+    .campos label,
+    .campos input {
+        width: 100%;
+    }
+
+    form button {
+        width: 50%;
+    }
+
+    footer {
+        padding: 20px;
+    }
+}
+
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    header {
+        height: 65px;
+        padding: 0 12px;
+    }
+
+    .logo-header img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .logo-header h1 {
+        font-size: 16px;
+    }
+
+    .voltar {
+        font-size: 11px;
+    }
+
+    main {
+        flex-direction: column;
+    }
+
+    /* menu lateral (igual à home) */
+
+    .barra-botoes {
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        gap: 5px;
+    }
+
+    .barra-botoes a {
+        width: 48%;
+        height: 55px;
+        margin: 0;
+        padding: 8px;
+        gap: 10px;
+        font-size: 13px;
+    }
+
+    .barra-botoes a img {
+        width: 24px;
+        height: 24px;
+        margin-right: 0;
+    }
+
+    .frase-lateral,
+    .toca {
+        display: none;
+    }
+
+    /* conteúdo */
+
+    section {
+        padding: 25px 15px;
+    }
+
+    section h2 {
+        font-size: 28px;
+    }
+
+    section form {
+        width: 100%;
+    }
+
+    form {
+        padding: 20px 15px;
+    }
+
+    .avatar {
+        width: 110px;
+        height: 110px;
+    }
+
+    .campos input {
+        height: 44px;
+    }
+
+    form button {
+        width: 100%;
+    }
+
+    footer {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .frase {
+        margin: 0;
+    }
+}
+@media (max-width: 600px) {
+    footer {
+        height: auto;
+        min-height: 0;
+        margin-top: 24px;
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .logo-footer {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .logo-footer img {
+        width: 42px;
+        height: 42px;
+        margin: 0;
+    }
+
+    .logo-footer h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .logo-footer p {
+        margin: 2px 0 0;
+        font-size: 8px;
+    }
+
+    .logo-footer .frase {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .logo-footer .frase-footer {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    footer span {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    footer .copyright {
+        margin: 0;
+        font-size: 14px;
+    }
+
+}

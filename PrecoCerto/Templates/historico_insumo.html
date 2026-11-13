@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Histórico de Custos | PreçoCerto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/historico_insumo.css') }}">
+</head>
+<body>
+
+    <header class="topo">
+        <div class="logo-header">
+            <img class="logo-imagem" src="{{ url_for('static', filename='img/chapeu.png') }}" alt="">
+            <div>
+                <h2 class="logo-titulo">Preço<span class="destaque">Certo</span></h2>
+                <p class="logo-sub">PRECIFICAÇÃO AFETIVA</p>
+            </div>
+        </div>
+
+        <a class="voltar" href="{{ url_for('pagina_insumos') }}">Voltar</a>
+    </header>
+
+    <main class="layout">
+
+        <div class="barra-botoes">
+            <a class="botao-menu" href="{{ url_for('home') }}"><img class="icone-menu" src="{{ url_for('static', filename='img/icone_casa.png') }}" alt="">Início</a>
+            <a class="botao-menu selecionado" href="{{ url_for('pagina_insumos') }}"><img class="icone-menu" src="{{ url_for('static', filename='img/icone_caixa.png') }}" alt="">Insumos</a>
+            <a class="botao-menu" href="{{ url_for('pagina_produtos') }}"><img class="icone-menu" src="{{ url_for('static', filename='img/icone_tocapng.png') }}" alt="">Produtos</a>
+            <a class="botao-menu" href="{{ url_for('perfil') }}"><img class="icone-menu" src="{{ url_for('static', filename='img/icone_engrenagem.png') }}" alt="">Configurações</a>
+            <div class="frase-lateral">
+                <img class="frase-imagem" src="{{ url_for('static', filename='img/folhinhapng.png') }}" alt="">
+                <p class="frase-texto">Boas escolhas hoje, melhores resultados amanhã!</p>
+            </div>
+            <img class="desenho-lateral" src="{{ url_for('static', filename='img/toca.png') }}" alt="">
+        </div>
+
+        <div class="conteudo">
+
+            <div class="cabecalho-pagina">
+                <div>
+                    <h1 class="titulo-pagina">Histórico de Custos</h1>
+                    <p class="subtitulo-pagina">Alterações de preço do insumo: {{ nome }}</p>
+                </div>
+            </div>
+
+            <section class="cartao">
+                <h2 class="titulo-cartao">Alterações realizadas</h2>
+
+                {% if historico %}
+
+                <div class="tabela-responsiva">
+                    <table class="tabela-historico">
+                        <thead>
+                            <tr>
+                                <th>Custo anterior</th>
+                                <th>Custo novo</th>
+                                <th>Data da alteração</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in historico %}
+                            <tr>
+                                <td class="celula-custo-anterior"><span class="rotulo">Custo anterior</span>R$ {{(item[1]) }}</td>
+                                <td class="celula-custo-novo"><span class="rotulo">Custo novo</span>R$ {{(item[2]) }}</td>
+                                <td class="celula-data"><span class="rotulo">Data da alteração</span>{{ item[3].strftime('%d/%m/%Y %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% else %}
+                    <p class="vazio">Nenhuma alteração de custo registrada.</p>
+                {% endif %}
+
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo-footer">
+            <img class="logo-rodape-imagem" src="{{ url_for('static', filename='img/chapeu.png') }}" alt="">
+            <div>
+                <h2 class="logo-titulo">Preço<span class="destaque">Certo</span></h2>
+                <p class="logo-sub">PRECIFICAÇÃO AFETIVA</p>
+            </div>
+        </div>
+
+        <p class="frase-footer">Precificação afetiva para negócios reais.</p>
+        <p class="copyright">© 2026 PreçoCerto</p>
+    </footer>
+
+</body>
+</html>

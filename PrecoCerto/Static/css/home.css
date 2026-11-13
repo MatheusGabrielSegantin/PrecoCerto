@@ -1,0 +1,854 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+:root {
+    --cor-principal: #C55232;
+    --cor-texto: #1A1F24;
+    --cor-fundo: #FDF7ED;
+    --cor-header: #FEFAF3;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    font-family: Arial, sans-serif;
+    color: var(--cor-texto);
+}
+
+/* CABEÇALHO */
+
+header {
+    height: 68px;
+    background-color: var(--cor-header);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+header .logo {
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+}
+
+.barra-menu {
+    display: none;
+}
+
+.nome-logo h1 {
+    font-size: 20px;
+}
+
+.nome-logo p {
+    font-size: 9px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+}.nome-logo span {
+    color: var(--cor-principal);
+}.logo-footer h2 span {
+    color: var(--cor-principal);
+}
+
+header nav {
+    margin-left: auto;
+}
+
+header nav a {
+    color: var(--cor-texto);
+    font-size: 14px;
+}
+
+/* ÁREA PRINCIPAL */
+
+main {
+    display: flex;
+    width: 100%;
+}
+
+/* MENU LATERAL */
+
+.barra-botoes {
+    width: 220px;
+    min-width: 220px;
+    min-height: 785px;
+    padding-top: 10px;
+    background-color: var(--cor-header);
+}
+
+.barra-botoes a {
+    display: flex;
+    align-items: center;
+    width: 180px;
+    height: 48px;
+    margin-left: 20px;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--cor-texto);
+    font-size: 15px;
+}
+
+.barra-botoes a:hover {
+    background-color: #F8E6DC;
+    color: var(--cor-principal);
+}
+
+/* PÁGINA ATUAL */
+
+.barra-botoes a.ativo {
+    background-color: #F8E6DC;
+    color: #A94127;
+}
+
+.barra-botoes a img {
+    width: 27px;
+    margin-right: 15px;
+}
+
+/* FRASE LATERAL */
+
+.frase-lateral {
+    width: 170px;
+    margin: 70px 0 0 28px;
+    padding: 15px 12px;
+    background-color: #EDDFD0;
+    border-radius: 12px;
+}
+
+.frase-lateral p {
+    color: #D09475;
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.folhinha {
+    width: 40px;
+    margin-bottom: 8px;
+}
+
+.decoracao {
+    width: 155px;
+    margin: 65px 0 0 22px;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+.conteudo {
+    width: 100%;
+    min-width: 0;
+    padding: 40px;
+}
+
+/* SAUDAÇÃO */
+
+.ola {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.texto-ola h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.texto-ola p {
+    font-size: 14px;
+}
+
+/* BOTÕES ADICIONAR */
+
+.adicionar {
+    display: flex;
+    gap: 15px;
+}.adicionar-insumo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 58px;
+    padding: 10px;
+    border-radius: 7px;
+    background-color: var(--cor-principal);
+    color: white;
+    font-size: 13px;
+}.adicionar-produto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 58px;
+    padding: 10px;
+    border-radius: 7px;
+    background-color: var(--cor-principal);
+    color: white;
+    font-size: 13px;
+}
+
+.mais {
+    color: white;
+    font-size: 28px;
+    margin-right: 8px;
+}
+
+/* MENSAGENS */
+
+.flash-messages {
+    background-color: #F8E6DC;
+    color: var(--cor-principal);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+/* ÁREA DOS CARDS E TABELAS */
+
+.area-cards-tabelas {
+    width: 100%;
+    min-width: 0;
+    margin-top: 50px;
+}
+
+/* CARDS */
+
+.cards {
+    display: flex;
+    gap: 18px;
+    width: 100%;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 12px 18px 22px;
+    flex: 1;
+    min-width: 0;
+    height: 155px;
+}
+
+/* ÍCONE E TEXTO DOS CARDS */
+
+.carddois {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    min-height: 65px;
+    margin-right: 40px;
+}
+
+.carddois img {
+    width: 65px;
+    height: 65px;
+}
+
+.card .info {
+    font-size: 12px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+    color: #6D7074;
+    line-height: 18px;
+    text-align: left;
+    margin: 0;
+}
+
+/* VALORES DOS CARDS */
+
+.card .num {
+    font-size: 25px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+    color: #1A1F24;
+    text-align: center;
+    margin-top: 22px;
+    margin-bottom: 0;
+}
+
+/* TABELAS */
+
+.tabelas {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 30px;
+}.tabela-insumosRecentes {
+    background-color: white;
+    border-radius: 12px;
+    padding: 12px 8px;
+    min-width: 0;
+}.tabela-produtosRecentes {
+    background-color: white;
+    border-radius: 12px;
+    padding: 12px 8px;
+    min-width: 0;
+}
+
+.tabela-insumosRecentes {
+    flex: 1;
+}
+
+.tabela-produtosRecentes {
+    flex: 1.2;
+}
+
+/* TÍTULOS DAS TABELAS */
+
+.nome-tabela {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.nome-tabela img {
+    width: 38px;
+    height: 38px;
+}
+
+.nome-tabela h3 {
+    font-size: 17px;
+    color: var(--cor-texto);
+}
+
+/* CONTEÚDO DAS TABELAS */
+
+.tabela-responsiva {
+    width: 100%;
+    min-width: 0;
+}
+
+.tabelas table {
+    width: 100%;
+    table-layout: fixed;
+/* Define se as bordas da tabela ficam juntas ou separadas. */
+    border-collapse: collapse;
+}
+
+.tabelas th {
+    text-align: left;
+    font-size: 11px;
+    color: #606368;
+    padding: 10px 4px;
+}
+
+.tabelas td {
+    font-size: 11px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+    color: #939799;
+    padding: 12px 4px;
+}
+
+.tabelas tbody tr {
+    height: 50px;
+}
+
+.tabelas tbody tr:hover {
+    background-color: #FFF9F5;
+}/* COLUNA DE AÇÕES */
+
+.tabela-produtosRecentes th:last-child {
+    width: 115px;
+}.tabela-produtosRecentes td:last-child {
+    width: 115px;
+}
+
+/* BOTÕES DAS TABELAS */
+
+.acoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.acoes form {
+    margin: 0;
+}.botao-editar {
+    display: inline-block;
+    padding: 5px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}.botao-deletar {
+    display: inline-block;
+    padding: 5px 7px;
+    border-radius: 4px;
+    font-size: 10px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+}
+
+.botao-editar {
+    background-color: #F4A186;
+    color: #C55232;
+}
+
+.botao-editar:hover {
+    background-color: #E98E70;
+}
+
+.botao-deletar {
+    background-color: #F8DAD0;
+    color: #C55232;
+}
+
+.botao-deletar:hover {
+    background-color: #F2C4B5;
+}
+
+.tabela-produtosRecentes .acoes {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}.tabela-produtosRecentes .botao-editar {
+    font-size: 10px;
+    padding: 5px;
+/* Controla as quebras de linha do texto. */
+    white-space: nowrap;
+}.tabela-produtosRecentes .botao-deletar {
+    font-size: 10px;
+    padding: 5px;
+/* Controla as quebras de linha do texto. */
+    white-space: nowrap;
+}
+
+.sem-dados {
+    padding: 20px;
+    color: #939799;
+    font-size: 13px;
+}
+
+/* RODAPÉ */
+
+footer {
+    min-height: 100px;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.logo-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-footer img {
+    width: 34px;
+    height: 34px;
+}
+
+.logo-footer h2 {
+    font-size: 17px;
+}
+
+.logo-footer p {
+    font-size: 8px;
+}
+
+.frase {
+    margin-left: 40px;
+    color: var(--cor-texto);
+}
+
+/* TELAS MÉDIAS */
+
+@media (max-width: 1200px) {
+
+    .tabelas {
+        flex-direction: column;
+    }
+
+    .tabela-insumosRecentes,
+    .tabela-produtosRecentes {
+        width: 100%;
+    }
+
+    .cards {
+        flex-wrap: wrap;
+    }
+
+    .card {
+        min-width: 200px;
+    }
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .barra-botoes {
+        width: 170px;
+        min-width: 170px;
+    }
+
+    .barra-botoes a {
+        width: 150px;
+        margin-left: 8px;
+        font-size: 14px;
+    }
+
+    .barra-botoes a img {
+        width: 23px;
+        margin-right: 10px;
+    }
+
+    .frase-lateral {
+        width: 140px;
+        margin: 40px 0 0 10px;
+    }
+
+    .decoracao {
+        width: 120px;
+        margin: 40px 0 0 10px;
+    }
+
+    .cards {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        flex: auto;
+        height: 155px;
+    }
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    header {
+        height: 64px;
+        padding: 0 12px;
+        gap: 8px;
+    }
+
+    .logo-header {
+        gap: 8px;
+    }
+
+    .logo-header img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .logo-header h2 {
+        font-size: 16px;
+    }
+
+    .logo-header p {
+        font-size: 7px;
+    }
+
+    .voltar {
+        font-size: 12px;
+    }
+
+    main {
+        flex-direction: column;
+    }
+
+    .barra-botoes {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-content: flex-start;
+        gap: 5px;
+    }
+
+    .barra-botoes a {
+        width: 48%;
+        height: 55px;
+        margin: 0;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+    }
+
+    .barra-botoes a img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .frase-lateral,
+    .decoracao {
+        display: none;
+    }
+
+    .conteudo {
+        padding: 25px 20px;
+    }
+
+    /* SAUDAÇÃO */
+
+    .ola {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 0 15px;
+    }
+
+    .texto-ola h2 {
+        font-size: 17px;
+    }
+
+    .texto-ola p {
+        font-size: 10px;
+    }
+
+    /* BOTÕES */
+
+    .adicionar {
+        width: 100%;
+        gap: 15px;
+    }
+
+    .adicionar-insumo,
+    .adicionar-produto {
+        flex: 1;
+        width: auto;
+        height: 38px;
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .mais {
+        font-size: 19px;
+        margin-right: 5px;
+    }
+
+    /* CARDS DE RESUMO */
+
+    .area-cards-tabelas {
+        margin-top: 30px;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+        gap: 27px;
+    }
+
+    .card {
+        height: 106px;
+        flex: none;
+        padding: 12px;
+    }
+
+    .carddois {
+        justify-content: flex-start;
+        gap: 10px;
+        margin-right: 0;
+        min-height: 40px;
+    }
+
+    .carddois img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .card .info {
+        font-size: 9px;
+        line-height: 13px;
+    }
+
+    .card .num {
+        font-size: 17px;
+        margin-top: 15px;
+    }
+
+    /* TABELAS */
+
+    .tabelas {
+        flex-direction: column;
+        gap: 40px;
+        margin-top: 27px;
+    }
+
+    .tabela-insumosRecentes,
+    .tabela-produtosRecentes {
+        width: 100%;
+        padding: 0 0 12px;
+    }
+
+    .nome-tabela {
+        min-height: 45px;
+        padding: 5px 20px;
+        margin-bottom: 0;
+    }
+
+    .nome-tabela img {
+        width: 34px;
+        height: 34px;
+    }
+
+    .nome-tabela h3 {
+        font-size: 11px;
+    }
+
+    .tabelas table {
+        width: 100%;
+/* Define se as bordas da tabela ficam juntas ou separadas. */
+        border-collapse: separate;
+    }
+
+    .tabelas th {
+        font-size: 8px;
+        padding: 5px 2px;
+        text-align: center;
+    }
+
+    .tabelas tbody tr {
+        height: 65px;
+        background-color: white;
+        box-shadow: 0 2px 3px #00000035;
+    }
+
+    .tabelas td {
+        font-size: 8px;
+        padding: 8px 3px;
+        text-align: center;
+        background-color: white;
+    }
+
+    /* ESCONDER CUSTO TOTAL */
+
+    .esconder {
+        display: none;
+    }
+
+    /* AÇÕES */
+
+    .acoes {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .botao-editar,
+    .botao-deletar {
+        font-size: 8px;
+        padding: 3px 5px;
+/* Controla as quebras de linha do texto. */
+        white-space: nowrap;
+    }
+
+    /* RODAPÉ */
+
+    footer {
+        padding: 15px 5px;
+        gap: 5px;
+        font-size: 7px;
+    }
+
+    .logo-footer {
+        gap: 4px;
+    }
+
+    .logo-footer img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .logo-footer h2 {
+        font-size: 8px;
+    }
+
+    .logo-footer p {
+        font-size: 5px;
+    }
+
+    .frase {
+        margin-left: 0;
+        font-size: 6px;
+    }
+}
+@media (max-width: 600px) {
+    footer {
+        height: auto;
+        min-height: 0;
+        margin-top: 24px;
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .logo-footer {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .logo-footer img {
+        width: 42px;
+        height: 42px;
+        margin: 0;
+    }
+
+    .logo-footer h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .logo-footer p {
+        margin: 2px 0 0;
+        font-size: 8px;
+    }
+
+    .logo-footer .frase {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .logo-footer .frase-footer {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    footer span {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    footer .copyright {
+        margin: 0;
+        font-size: 14px;
+    }
+
+}

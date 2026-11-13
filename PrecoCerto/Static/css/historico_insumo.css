@@ -1,0 +1,481 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: #20242a;
+    background: #fdf7ed;
+    font-family: Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+/* CABEÇALHO */
+
+.topo {
+    width: 100%;
+    height: 68px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fffaf3;
+}
+
+.logo-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-imagem {
+    width: 42px;
+    height: 42px;
+}
+
+.logo-titulo {
+    margin: 0;
+    font-size: 18px;
+/* Define a espessura do texto. */
+    font-weight: bold;
+}
+
+.logo-sub {
+    margin: 2px 0 0;
+    font-size: 8px;
+}
+
+.destaque {
+    color: #c55232;
+}
+
+.voltar {
+    font-size: 14px;
+    color: black;
+}
+
+/* LAYOUT */
+
+.layout {
+    min-height: calc(100vh - 168px);
+    display: flex;
+}
+
+/* MENU LATERAL */
+
+.barra-botoes {
+    width: 220px;
+    min-width: 220px;
+    padding: 12px 10px;
+    background: #fffaf3;
+}
+
+.botao-menu {
+    height: 48px;
+    margin: 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #20242a;
+}
+
+.botao-menu:hover {
+    color: #a94127;
+    background: #f8e6dc;
+}
+
+.selecionado {
+    color: #a94127;
+    background: #f8e6dc;
+}
+
+.icone-menu {
+    width: 26px;
+    height: 26px;
+}
+
+.frase-lateral {
+    margin: 56px 10px 0;
+    padding: 12px;
+    border-radius: 12px;
+    background: #eddfd0;
+}
+
+.frase-imagem {
+    width: 32px;
+    height: 32px;
+}
+
+.frase-texto {
+    margin: 6px 0 0;
+    color: #d09475;
+    font-size: 13px;
+}
+
+.desenho-lateral {
+    width: 155px;
+    margin: 52px 15px 0;
+}
+
+/* CONTEÚDO */
+
+.conteudo {
+    flex: 1;
+    min-width: 0;
+    padding: 48px 5%;
+}
+
+.cabecalho-pagina {
+    max-width: 1050px;
+    margin: 0 auto 28px;
+}
+
+.titulo-pagina {
+    margin: 0 0 6px;
+    font-size: 30px;
+}
+
+.subtitulo-pagina {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* CARTÃO E TABELA */
+
+.cartao {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 24px;
+    background: white;
+    border-radius: 5px;
+}
+
+.titulo-cartao {
+    margin: 0 0 18px;
+    font-size: 22px;
+}
+
+.tabela-responsiva {
+    border: 1px solid #898989;
+    border-radius: 14px;
+}
+
+.tabela-historico {
+    width: 100%;
+    min-width: 620px;
+    font-size: 13px;
+/* Define se as bordas da tabela ficam juntas ou separadas. */
+    border-collapse: collapse;
+}
+
+th {
+    padding: 14px 12px;
+    color: #bc674b;
+    background: #fbf5ed;
+    font-size: 11px;
+    text-align: left;
+}
+
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f0ebe5;
+}
+
+.vazio {
+    padding: 28px 12px;
+    color: #777;
+    text-align: center;
+}
+
+/* ROTULOS DAS COLUNAS (SÓ NO RESPONSIVO) */
+
+.rotulo {
+    display: none;
+}
+
+/* RODAPÉ */
+
+footer {
+    min-height: 100px;
+    padding: 18px 40px 18px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: #fdf7ed;
+    font-size: 12px;
+}
+
+.logo-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-rodape-imagem {
+    width: 34px;
+    height: 34px;
+}
+
+.frase-footer {
+    margin: 0 auto 0 20px;
+}
+
+.copyright {
+    margin: 0;
+}
+
+/* ============================= */
+/* RESPONSIVO                    */
+/* ============================= */
+
+/* RODAPÉ (até 900px) */
+
+@media (max-width: 900px) {
+
+    footer {
+        min-height: 0;
+        padding: 24px 14px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .logo-footer {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 10px;
+    }
+
+    .logo-rodape-imagem {
+        width: 38px;
+        height: 38px;
+    }
+
+    .frase-footer {
+        margin: 4px 0 0;
+        font-size: 14px;
+    }
+
+    .copyright {
+        margin: 0;
+        color: #c55232;
+        font-size: 14px;
+    }
+}
+
+/* TABLET E CELULAR: TABELA EM CARTÕES (até 768px) */
+
+@media (max-width: 768px) {
+
+    .tabela-responsiva {
+        border: 0;
+        border-radius: 0;
+    }
+
+    .tabela-historico {
+        display: block;
+        min-width: 0;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody {
+        display: block;
+    }
+
+    tr {
+        display: block;
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        border: 1px solid #eee7e2;
+        border-radius: 12px;
+        background: white;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 2px;
+        border-bottom: 1px solid #f0ebe5;
+        background: white;
+        text-align: right;
+    }
+
+    .rotulo {
+        display: block;
+        color: #8b6e60;
+        font-size: 11px;
+/* Define a espessura do texto. */
+        font-weight: bold;
+        text-align: left;
+    }
+}
+
+/* CELULAR (até 600px) */
+
+@media (max-width: 600px) {
+
+    /* CABEÇALHO */
+
+    .topo {
+        height: 64px;
+        padding: 0 12px;
+        gap: 8px;
+    }
+
+    .logo-imagem {
+        width: 38px;
+        height: 38px;
+    }
+
+    .logo-titulo {
+        font-size: 16px;
+    }
+
+    .logo-sub {
+        font-size: 7px;
+    }
+
+    .voltar {
+        font-size: 12px;
+    }
+
+    /* MENU */
+
+    .layout {
+        display: block;
+    }
+
+    .barra-botoes {
+        width: 100%;
+        min-width: 0;
+        padding: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .botao-menu {
+        width: 48%;
+        height: 48px;
+        margin: 0;
+        padding: 8px;
+        gap: 8px;
+        font-size: 13px;
+    }
+
+    .icone-menu {
+        width: 22px;
+        height: 22px;
+    }
+
+    .frase-lateral {
+        display: none;
+    }
+
+    .desenho-lateral {
+        display: none;
+    }
+
+    /* CONTEÚDO */
+
+    .conteudo {
+        padding: 22px 14px;
+    }
+
+    .cabecalho-pagina {
+        margin-bottom: 20px;
+    }
+
+    .titulo-pagina {
+        font-size: 24px;
+    }
+
+    .cartao {
+        padding: 16px 12px;
+    }
+
+    .tabela-responsiva {
+        border: 0;
+    }
+}
+@media (max-width: 600px) {
+    footer {
+        height: auto;
+        min-height: 0;
+        margin-top: 24px;
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .logo-footer {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .logo-footer img {
+        width: 42px;
+        height: 42px;
+        margin: 0;
+    }
+
+    .logo-footer h2 {
+        margin: 0;
+        font-size: 22px;
+    }
+
+    .logo-footer p {
+        margin: 2px 0 0;
+        font-size: 8px;
+    }
+
+    .logo-footer .frase {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .logo-footer .frase-footer {
+        width: 100%;
+        margin: 8px 0 0;
+        font-size: 14px;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    footer span {
+        margin: 0;
+        font-size: 14px;
+    }
+
+    footer .copyright {
+        margin: 0;
+        font-size: 14px;
+    }
+
+}
