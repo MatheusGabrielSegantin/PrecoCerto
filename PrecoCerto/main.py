@@ -10,7 +10,7 @@ app.config['SECRET_KEY'] = 'Aqui_e_a_chave_da_turma_a'
 
 # CONEXÃO COM O BANCO
 host = 'localhost'
-database = r'C:\Users\mathe\Downloads\PrecoCerto\BANCO.FDB'
+database = r'C:\Users\Aluno\Downloads\PrecoCerto-main\PrecoCerto-main\PrecoCerto\BANCO.FDB'
 user = 'SYSDBA'
 password = 'sysdba'
 
@@ -1527,23 +1527,80 @@ def editar_produto(id_produto):
 
 @app.route('/deletar_produto/<int:id>', methods=['POST'])
 def deletar_produto(id):
+    if 'id_usuario' not in session:
+        return redirect(url_for('login_usu'))
+
+    id_usuario = session['id_usuario']
     cursor = con.cursor()
 
     try:
-        cursor.execute("""DELETE FROM insumos_utilizado WHERE id_produto = ?""", (id,))
-        cursor.execute("""DELETE FROM produtos WHERE id_produto = ?""", (id,))
-        con.commit()
+        cursor.execute("""
+            SELECT id_produto
+            FROM produtos
+            WHERE id_produto = ? AND id_usuario = ?
+        """, (id, id_usuario))
 
-        flash("Produto deletado com sucesso!")
-        return redirect(url_for("pagina_produtos"))
+        if not cursor.fetchone():
+            flash("Produto não encontrado!")
+            return redirect(url_for('pagina_produtos'))
+
+        # Busca os insumos utilizados pelo produto.
+        cursor.execute("""
+            SELECT i.id_insumos, i.estoque, i.unidade, iu.quantidade
+            FROM insumos_utilizado iu
+            INNER JOIN insumos i ON i.id_insumos = iu.id_insumos
+            WHERE iu.id_produto = ?
+            AND i.id_usuario = ?
+        """, (id, id_usuario))
+
+        insumos = cursor.fetchall()
+
+        # Devolve as quantidades ao estoque.
+        for insumo in insumos:
+            id_insumo = insumo[0]
+            estoque = float(insumo[1] or 0)
+            unidade = insumo[2]
+            quantidade = float(insumo[3] or 0)
+
+            if unidade == 1 or unidade == 3:
+                quantidade_estoque = quantidade / 1000
+            else:
+                quantidade_estoque = quantidade
+
+            novo_estoque = estoque + quantidade_estoque
+
+            cursor.execute("""
+                UPDATE insumos
+                SET estoque = ?
+                WHERE id_insumos = ?
+                AND id_usuario = ?
+            """, (novo_estoque, id_insumo, id_usuario))
+
+        # Exclui os insumos utilizados na receita.
+        cursor.execute("""
+            DELETE FROM insumos_utilizado
+            WHERE id_produto = ?
+        """, (id,))
+
+        # Exclui o produto.
+        cursor.execute("""
+            DELETE FROM produtos
+            WHERE id_produto = ?
+            AND id_usuario = ?
+        """, (id, id_usuario))
+
+        con.commit()
+        flash("Produto deletado e quantidades devolvidas ao estoque!")
 
     except Exception as e:
         con.rollback()
         flash(f"Ocorreu um erro -> {e}")
-        return redirect(url_for("pagina_produtos"))
 
     finally:
         cursor.close()
+
+    return redirect(url_for('pagina_produtos'))
+
 
 @app.route('/deletar_produto_home/<int:id>', methods=['POST'])
 def deletar_produto_home(id):
@@ -1729,10 +1786,13 @@ def adicionando_insumo_produto():
 @app.route('/inserir_insumos_produto/<int:id>', methods=['POST'])
 def inserir_insumos_produto(id):
 
-    # Confere se usuário e produto estão na sessão.
-    if 'id_usuario' not in session or 'id_produto' not in session:
+    if 'id_usuario' not in session:
         flash("Você precisa estar logado!")
         return redirect(url_for('login_usu'))
+
+    if 'id_produto' not in session:
+        flash("Produto não selecionado!")
+        return redirect(url_for('pagina_produtos'))
 
     # Pega os identificadores e abre o banco.
     id_usuario = session['id_usuario']
@@ -1876,6 +1936,7 @@ def lista_insumos_produto(id_produto):
         if not produto:
             flash('Produto não encontrado!')
             return redirect(url_for('home'))
+        session['id_produto'] = id_produto
 
         # Busca os insumos que fazem parte do produto.
         cursor.execute("""
@@ -1959,17 +2020,16 @@ def lista_insumos_produto(id_produto):
 @app.route('/editar_insumos_produto/<int:id_produto>/<int:id_insumos>', methods=['GET', 'POST'])
 def editar_insumos_produto(id_produto, id_insumos):
 
-    # Confere se o usuário está conectado.
     if 'id_usuario' not in session:
         flash("Você precisa estar logado!")
         return redirect(url_for('login_usu'))
 
-    # Pega o usuário atual e abre o banco.
     id_usuario = session['id_usuario']
     cursor = con.cursor()
 
     try:
-        # Busca o produto desse usuário.
+
+        # BUSCA O PRODUTO
         cursor.execute("""
             SELECT id_produto, nome
             FROM produtos
@@ -1982,7 +2042,7 @@ def editar_insumos_produto(id_produto, id_insumos):
             flash("Produto não encontrado!")
             return redirect(url_for('home'))
 
-        # Busca o insumo usado nesse produto.
+        # BUSCA O INSUMO DO PRODUTO
         cursor.execute("""
             SELECT iu.id_insumos, i.nome, iu.quantidade,
                    iu.unidade, i.unidade, i.estoque
@@ -2002,7 +2062,6 @@ def editar_insumos_produto(id_produto, id_insumos):
                 id_produto=id_produto
             ))
 
-        # Salva os dados recebidos do formulário.
         if request.method == 'POST':
 
             quantidade = float(request.form['quantidade'])
@@ -2016,21 +2075,19 @@ def editar_insumos_produto(id_produto, id_insumos):
                     id_insumos=id_insumos
                 ))
 
-            # Guarda a quantidade e unidade anteriores.
             quantidade_antiga = float(insumo[2])
             unidade_antiga = int(insumo[3])
 
-            # Pega a unidade e o estoque do insumo.
             unidade_estoque = int(insumo[4])
             estoque_atual = float(insumo[5])
 
-            # Converte a quantidade antiga para a unidade base.
+            # QUANTIDADE ANTIGA
             if unidade_antiga in (1, 3):
                 quantidade_antiga_base = quantidade_antiga * 1000
             else:
                 quantidade_antiga_base = quantidade_antiga
 
-            # Converte a nova quantidade para a unidade base.
+            # NOVA QUANTIDADE
             if unidade in (1, 3):
                 quantidade_nova_base = quantidade * 1000
                 unidade_base = unidade + 1
@@ -2038,19 +2095,23 @@ def editar_insumos_produto(id_produto, id_insumos):
                 quantidade_nova_base = quantidade
                 unidade_base = unidade
 
-            # Identifica o tipo de unidade do estoque.
+            # TIPO DO INSUMO
             if unidade_estoque in (1, 2):
                 tipo_estoque = 'peso'
+
             elif unidade_estoque in (3, 4):
                 tipo_estoque = 'volume'
+
             else:
                 tipo_estoque = 'unidade'
 
-            # Identifica o tipo de unidade escolhido.
+            # TIPO ESCOLHIDO
             if unidade_base in (1, 2):
                 tipo_receita = 'peso'
+
             elif unidade_base in (3, 4):
                 tipo_receita = 'volume'
+
             else:
                 tipo_receita = 'unidade'
 
@@ -2062,19 +2123,15 @@ def editar_insumos_produto(id_produto, id_insumos):
                     id_insumos=id_insumos
                 ))
 
-            # Converte os valores para a unidade do estoque.
+            # CONVERTE PARA UNIDADE DO ESTOQUE
             if unidade_estoque in (1, 3):
                 quantidade_antiga_estoque = quantidade_antiga_base / 1000
-            else:
-                quantidade_antiga_estoque = quantidade_antiga_base
-
-            # Ajusta também a nova quantidade para o estoque.
-            if unidade_estoque in (1, 3):
                 quantidade_nova_estoque = quantidade_nova_base / 1000
             else:
+                quantidade_antiga_estoque = quantidade_antiga_base
                 quantidade_nova_estoque = quantidade_nova_base
 
-            # Devolve o valor antigo e desconta o novo.
+            # ATUALIZA ESTOQUE
             estoque_final = (
                 estoque_atual
                 + quantidade_antiga_estoque
@@ -2089,14 +2146,13 @@ def editar_insumos_produto(id_produto, id_insumos):
                     id_insumos=id_insumos
                 ))
 
-            # Salva o estoque atualizado.
             cursor.execute("""
                 UPDATE insumos
                 SET estoque = ?
                 WHERE id_insumos = ? AND id_usuario = ?
             """, (estoque_final, id_insumos, id_usuario))
 
-            # Salva a quantidade usada na receita.
+            # ATUALIZA QUANTIDADE DO INSUMO
             cursor.execute("""
                 UPDATE insumos_utilizado
                 SET quantidade = ?, unidade = ?
@@ -2108,57 +2164,151 @@ def editar_insumos_produto(id_produto, id_insumos):
                 id_insumos
             ))
 
-            # Confirma as alterações no banco.
+            # ==========================================
+            # RECALCULA O PRODUTO
+            # ==========================================
+
+            cursor.execute("""
+                SELECT i.custo_unitario,
+                       iu.quantidade,
+                       i.unidade,
+                       iu.unidade
+                FROM insumos_utilizado iu
+                INNER JOIN insumos i
+                ON i.id_insumos = iu.id_insumos
+                WHERE iu.id_produto = ?
+                AND i.id_usuario = ?
+            """, (id_produto, id_usuario))
+
+            insumos = cursor.fetchall()
+
+            total_insumos = 0
+
+            for item in insumos:
+
+                custo = float(item[0])
+                quantidade_usada = float(item[1])
+
+                unidade_insumo = item[2]
+                unidade_usada = item[3]
+
+                # KG -> GRAMAS
+                if unidade_insumo == 1 and unidade_usada == 2:
+                    total_insumos += custo * quantidade_usada / 1000
+
+                # LITROS -> ML
+                elif unidade_insumo == 3 and unidade_usada == 4:
+                    total_insumos += custo * quantidade_usada / 1000
+
+                # MESMA UNIDADE
+                elif unidade_insumo == unidade_usada:
+                    total_insumos += custo * quantidade_usada
+
+            # BUSCA MÃO DE OBRA
+            cursor.execute("""
+                SELECT mao_obra
+                FROM usuario
+                WHERE id_usuario = ?
+            """, (id_usuario,))
+
+            usuario = cursor.fetchone()
+
+            mao_obra = float(usuario[0] or 0)
+
+            # BUSCA MARGEM E PREÇO DO PRODUTO
+            cursor.execute("""
+                SELECT margem_lucro, preco
+                FROM produtos
+                WHERE id_produto = ?
+                AND id_usuario = ?
+            """, (id_produto, id_usuario))
+
+            dados_produto = cursor.fetchone()
+
+            margem = float(dados_produto[0])
+            preco = float(dados_produto[1])
+
+            # NOVO CUSTO TOTAL
+            custo_total = round(total_insumos + mao_obra, 2)
+
+            # NOVA SUGESTÃO
+            sugestao = round(
+                custo_total + (custo_total * margem / 100),
+                2
+            )
+
+            # NOVO LUCRO
+            if custo_total > 0:
+                lucro_unidade = round(
+                    ((preco - custo_total) / custo_total) * 100,
+                    2
+                )
+            else:
+                lucro_unidade = 0
+
+            # ATUALIZA O PRODUTO
+            cursor.execute("""
+                UPDATE produtos
+                SET custo_total = ?,
+                    sugestao = ?,
+                    lucro_unidade = ?
+                WHERE id_produto = ?
+                AND id_usuario = ?
+            """, (
+                custo_total,
+                sugestao,
+                lucro_unidade,
+                id_produto,
+                id_usuario
+            ))
+
             con.commit()
 
-            flash("Insumo editado com sucesso!")
+            flash("Insumo editado e valores recalculados com sucesso!")
+
             return redirect(url_for(
                 'lista_insumos_produto',
                 id_produto=id_produto
             ))
 
-        # Abre a tela com os dados atuais.
         return render_template(
             'editar_insumos_produto.html',
             produto=produto,
             insumo=insumo
         )
 
-    # Desfaz alterações se ocorrer algum erro.
     except Exception as e:
         con.rollback()
+
         flash(f"Ocorreu um erro -> {e}")
+
         return redirect(url_for(
             'lista_insumos_produto',
             id_produto=id_produto
         ))
 
-    # Fecha o acesso ao banco.
     finally:
         cursor.close()
-
 @app.route('/deletar_insumos_produto/<int:id>/<int:id_produto>', methods=['POST'])
 def deletar_insumos_produto(id, id_produto):
 
-    # Confere se o usuário está conectado.
     if 'id_usuario' not in session:
         flash("Você precisa estar logado!")
         return redirect(url_for('login_usu'))
 
-    # Abre o banco e pega o usuário atual.
-    cursor = con.cursor()
     id_usuario = session['id_usuario']
+    cursor = con.cursor()
 
     try:
-        # Busca estoque e quantidade usada na receita.
+        # Busca o insumo que será excluído.
         cursor.execute("""
             SELECT i.estoque, i.unidade, iu.quantidade
             FROM insumos_utilizado iu
             INNER JOIN insumos i ON i.id_insumos = iu.id_insumos
+            INNER JOIN produtos p ON p.id_produto = iu.id_produto
             WHERE iu.id_insumos = ?
-            AND iu.id_produto = ?
-            AND i.id_usuario = ?
-        """, (id, id_produto, id_usuario))
+            AND iu.id_produto = ? AND i.id_usuario = ? AND p.id_usuario = ?
+        """, (id, id_produto, id_usuario, id_usuario))
 
         dados = cursor.fetchone()
 
@@ -2166,49 +2316,107 @@ def deletar_insumos_produto(id, id_produto):
             flash("Insumo não encontrado!")
             return redirect(url_for('lista_insumos_produto', id_produto=id_produto))
 
-        # Separa os dados encontrados.
         estoque = float(dados[0])
-        unidade_estoque = int(dados[1])
+        unidade = int(dados[1])
         quantidade = float(dados[2])
 
-        # Ajusta a quantidade para a unidade do estoque.
-        if unidade_estoque == 1 or unidade_estoque == 3:
-            quantidade_estoque = quantidade / 1000
-        else:
-            quantidade_estoque = quantidade
-
         # Devolve a quantidade ao estoque.
-        novo_estoque = estoque + quantidade_estoque
+        if unidade == 1 or unidade == 3:
+            quantidade = quantidade / 1000
+
+        novo_estoque = estoque + quantidade
 
         cursor.execute("""
             UPDATE insumos
             SET estoque = ?
-            WHERE id_insumos = ?
-            AND id_usuario = ?
+            WHERE id_insumos = ? AND id_usuario = ?
         """, (novo_estoque, id, id_usuario))
 
-        # Remove o insumo da receita do produto.
+        # Exclui o vínculo do insumo com o produto.
         cursor.execute("""
             DELETE FROM insumos_utilizado
-            WHERE id_insumos = ?
-            AND id_produto = ?
+            WHERE id_insumos = ? AND id_produto = ?
         """, (id, id_produto))
 
-        # Confirma as alterações no banco.
+        # Busca os insumos restantes.
+        cursor.execute("""
+            SELECT i.custo_unitario, iu.quantidade,
+                   i.unidade, iu.unidade
+            FROM insumos_utilizado iu
+            INNER JOIN insumos i ON i.id_insumos = iu.id_insumos
+            WHERE iu.id_produto = ?
+            AND i.id_usuario = ?
+        """, (id_produto, id_usuario))
+
+        insumos = cursor.fetchall()
+
+        total_insumos = 0
+
+        for insumo in insumos:
+            custo = float(insumo[0])
+            quantidade = float(insumo[1])
+            unidade_insumo = insumo[2]
+            unidade_usada = insumo[3]
+
+            if unidade_insumo == 1 and unidade_usada == 2:
+                total_insumos += custo * quantidade / 1000
+
+            elif unidade_insumo == 3 and unidade_usada == 4:
+                total_insumos += custo * quantidade / 1000
+
+            elif unidade_insumo == unidade_usada:
+                total_insumos += custo * quantidade
+
+            else:
+                raise ValueError("Unidade incompatível!")
+
+        # Busca mão de obra, margem e preço.
+        cursor.execute("""
+            SELECT u.mao_obra, p.margem_lucro, p.preco
+            FROM produtos p
+            INNER JOIN usuario u ON u.id_usuario = p.id_usuario
+            WHERE p.id_produto = ? AND p.id_usuario = ?
+        """, (id_produto, id_usuario))
+
+        produto = cursor.fetchone()
+
+        mao_obra = float(produto[0] or 0)
+        margem = float(produto[1])
+        preco = float(produto[2])
+
+        # Recalcula os três valores.
+        custo_total = round(total_insumos + mao_obra, 2)
+
+        sugestao = round(custo_total * (1 + margem / 100), 2)
+
+        if custo_total > 0:
+            lucro_unidade = round(((preco - custo_total) / custo_total) * 100, 2)
+        else:
+            lucro_unidade = 0
+
+        # Atualiza o produto.
+        cursor.execute("""
+            UPDATE produtos
+            SET custo_total = ?,
+                sugestao = ?,
+                lucro_unidade = ?
+            WHERE id_produto = ? AND id_usuario = ?
+        """, (custo_total, sugestao, lucro_unidade,
+              id_produto, id_usuario))
+
         con.commit()
 
-        flash("Insumo deletado e quantidade devolvida ao estoque!")
+        flash("Insumo excluído e valores atualizados!")
         return redirect(url_for('lista_insumos_produto', id_produto=id_produto))
 
-    # Desfaz alterações se ocorrer algum erro.
     except Exception as e:
         con.rollback()
         flash(f"Ocorreu um erro -> {e}")
         return redirect(url_for('lista_insumos_produto', id_produto=id_produto))
 
-    # Fecha o acesso ao banco.
     finally:
         cursor.close()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
